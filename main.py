@@ -1,7 +1,10 @@
-'''
+"""
 TO DO:
 Displaying the evolution chain of the Pokémon, their abilities, moves, and stats
-'''
+
+- Add preview text in the abilities box and where the user enters the name of the pokemon
+- Add 'moves:' above the moves textbox.
+"""
 
 import tkinter
 import requests  # for API
@@ -42,7 +45,6 @@ def show_sprite():
     sprite_label.config(image=photo)
     sprite_label.image = photo
 
-
 # When button is clicked (after text)
 def clicked():
     # Get user input
@@ -55,13 +57,28 @@ def clicked():
     responseJSN = response.json()
 
     # Output attributes given Pokemon name (can be changed later btw)
-    base_experience = responseJSN['base_experience']
     height = responseJSN['height']
     weight = responseJSN['weight']
 
+    # Extract the abilities of a Pokemon from API response
+    abilities = [ability['ability']['name'] for ability in responseJSN['abilities']]
+    abilities_str = ', '.join(abilities)
+
+    # Extract the moves of a Pokemon from API response
+    moves = [move['move']['name'] for move in responseJSN['moves']]
+    # moves_str = ', '.join(moves)
+
     # Output those JSN stuff above
-    output_label.config(text="Output: " + '\n' + f'Base experience: {base_experience}' + '\n' + f'Height: {height}' +
+    # output_label.config(text="Output: " + '\n' + f'Abilities: {abilities_str}' + '\n' + f'Move(s): {moves_str}' +
+                             #'\n' + f'Weight: {weight}')
+
+    output_label.config(text="Output: " + '\n' + f'Abilities: {abilities_str}' +
                              '\n' + f'Weight: {weight}')
+
+    # Update the Listbox with the moves
+    moves_listbox.delete(0, END)
+    for move in moves:
+        moves_listbox.insert(END, move)
 
     # I want the 'Enter' button to disappear after it is pressed and the information is there, looks better that way :)
     btn.pack_forget()
@@ -77,10 +94,10 @@ inputtxt.pack()
 output_label = tkinter.Label(w, text="")
 output_label.pack()
 
-'''
-txt = Entry(w, width=10)
-txt.grid(column=1, row=0)
-'''
+# Moves Listbox
+moves_listbox = Listbox(w)
+moves_listbox.pack()
+
 # 'Enter' button
 btn = tkinter.Button(w, text='Enter', fg='Blue', command=clicked)
 btn.pack()
