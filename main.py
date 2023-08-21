@@ -30,20 +30,26 @@ y = (screen_height / 2) - (500 / 2)
 
 # This is to show the sprite, if the user wants
 def show_sprite():
-    pokemonInput = inputtxt.get(1.0, 'end-1c')
-    url = f'https://pokeapi.co/api/v2/pokemon/{pokemonInput}/'
-    response = requests.get(url)
-    responseJSN = response.json()
-    sprite_url = responseJSN['sprites']['front_default']
-    sprite_response = requests.get(sprite_url)
-    # API will return binary data for the sprite, this just makes it an image object that can be used by the PIL
-    # library.
-    image_data = io.BytesIO(sprite_response.content)
-    image = Image.open(image_data)
-    photo = ImageTk.PhotoImage(image)
+    # Check if the sprite label already has an image
+    if sprite_label.cget('image'):
+        # If it does, clear the image to hide the sprite
+        sprite_label.config(image="")
+    else:
+        pokemonInput = inputtxt.get(1.0, 'end-1c')
+        url = f'https://pokeapi.co/api/v2/pokemon/{pokemonInput}/'
+        response = requests.get(url)
+        responseJSN = response.json()
+        sprite_url = responseJSN['sprites']['front_default']
+        sprite_response = requests.get(sprite_url)
+        # API will return binary data for the sprite, this just makes it an image object that can be used by the PIL
+        # library.
+        image_data = io.BytesIO(sprite_response.content)
+        image = Image.open(image_data)
+        photo = ImageTk.PhotoImage(image)
 
-    sprite_label.config(image=photo)
-    sprite_label.image = photo
+        sprite_label.config(image=photo)
+        sprite_label.image = photo
+
 
 # When button is clicked (after text)
 def clicked():
@@ -70,7 +76,7 @@ def clicked():
 
     # Output those JSN stuff above
     # output_label.config(text="Output: " + '\n' + f'Abilities: {abilities_str}' + '\n' + f'Move(s): {moves_str}' +
-                             #'\n' + f'Weight: {weight}')
+    # '\n' + f'Weight: {weight}')
 
     output_label.config(text="Output: " + '\n' + f'Abilities: {abilities_str}' +
                              '\n' + f'Weight: {weight}')
@@ -84,11 +90,35 @@ def clicked():
     btn.pack_forget()
     # This is to show the 'Sprite' button to the user
     sprite_button.pack()
+    # Show the reset button
+    reset_button.pack()
+
+
+# Reset everything
+def reset():
+    # Clear the input text box
+    inputtxt.delete(1.0, END)
+    # Clear the output label
+    output_label.config(text="")
+    # Clear the moves listbox
+    moves_listbox.delete(0, END)
+    # Clear the sprite label
+    sprite_label.config(image="")
+    # Show the search button again
+    btn.pack()
+    # Hide the reset button
+    reset_button.pack_forget()
+
+# Create the reset button and hide it initially
+reset_button = Button(w, text="Reset", command=reset)
+reset_button.pack()
+reset_button.pack_forget()
 
 
 # TextBox Creation
 inputtxt = tkinter.Text(w, height=5, width=20)
 inputtxt.pack()
+# inputtxt.bind('<KeyRelease>', on_key_release)
 
 # Output label beneath textbox
 output_label = tkinter.Label(w, text="")
