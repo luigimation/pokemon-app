@@ -2,10 +2,10 @@
 TO DO:
 Displaying the evolution chain of the Pokémon, their abilities, moves, and stats
 
+- Make code more OOP friendly (?)
 - Add preview text in the abilities box and where the user enters the name of the pokemon
 - Add 'moves:' above the moves textbox.
 """
-
 import tkinter
 import requests  # for API
 from tkinter import *  # for GUI
@@ -114,7 +114,6 @@ reset_button = Button(w, text="Reset", command=reset)
 reset_button.pack()
 reset_button.pack_forget()
 
-
 # TextBox Creation
 inputtxt = tkinter.Text(w, height=5, width=20)
 inputtxt.pack()
@@ -137,6 +136,7 @@ sprite_button = Button(w, text="Sprite", command=show_sprite)
 sprite_label = Label(w)
 sprite_label.pack()
 
+# This has to do with putting the window in the middle
 w.geometry("+%d+%d" % (x, y))
 # Run Tkinter
 w.mainloop()
