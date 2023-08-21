@@ -1,3 +1,8 @@
+'''
+TO DO:
+Displaying the evolution chain of the Pokémon, their abilities, moves, and stats
+'''
+
 import tkinter
 import requests  # for API
 from tkinter import *  # for GUI
@@ -7,7 +12,7 @@ import io
 
 # Assign window
 w = Tk()
-w.title('Test')
+w.title('Pokemon App')
 w.geometry('500x500')
 
 # Make window appear in the middle of the screen
@@ -28,6 +33,8 @@ def show_sprite():
     responseJSN = response.json()
     sprite_url = responseJSN['sprites']['front_default']
     sprite_response = requests.get(sprite_url)
+    # API will return binary data for the sprite, this just makes it an image object that can be used by the PIL
+    # library.
     image_data = io.BytesIO(sprite_response.content)
     image = Image.open(image_data)
     photo = ImageTk.PhotoImage(image)
