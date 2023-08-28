@@ -4,7 +4,6 @@ Displaying the evolution chain of the Pokémon, their abilities, moves, and stat
 
 - Make code more OOP friendly (?)
 - Add preview text in the abilities box and where the user enters the name of the pokemon
-- Add 'moves:' above the moves textbox.
 """
 import tkinter
 import requests  # for API
@@ -79,7 +78,7 @@ def clicked():
     # '\n' + f'Weight: {weight}')
 
     output_label.config(text="Output: " + '\n' + f'Abilities: {abilities_str}' +
-                             '\n' + f'Weight: {weight}')
+                             '\n' + f'Weight: {weight} lbs' + '\n' + 'Abilities:'+ '\n')
 
     # Update the Listbox with the moves
     moves_listbox.delete(0, END)
@@ -89,7 +88,7 @@ def clicked():
     # I want the 'Enter' button to disappear after it is pressed and the information is there, looks better that way :)
     btn.pack_forget()
     # This is to show the 'Sprite' button to the user
-    sprite_button.pack()
+    sprite_button.pack() 
     # Show the reset button
     reset_button.pack()
 
